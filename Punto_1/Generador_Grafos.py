@@ -1,10 +1,11 @@
 """
-Generación de grafos aleatorios con opción para seleccionar:
+Generación de grafos aleatorios completamente aleatoria:
 - Grafo simple
 - Grafo conexo
 - Grafo planar
 
-El grafo se exporta a formato GraphML para visualizar en Cytoscape.
+El programa genera un tipo de grafo al azar, indica qué tipo de grafo ha generado,
+la cantidad de vértices y aristas, y lo exporta en formato GraphML para visualizar en Cytoscape.
 """
 
 # -----------------------------------------|
@@ -21,6 +22,7 @@ El grafo se exporta a formato GraphML para visualizar en Cytoscape.
 import networkx as nx
 import random
 import os
+import string
 
 # -----------------------------------------|
 # Funciones Auxiliares
@@ -71,17 +73,23 @@ def exportar_grafo_graphml(G, filename):
     local_dir = os.getcwd()
     file_path = os.path.join(local_dir, filename)
     nx.write_graphml(G, file_path)
+    print(f"Archivo guardado exitosamente en: {file_path}. Puede abrirlo en Cytoscape para visualizar la estructura del grafo.")
     return file_path
 
-# 5. Función para visualizar el grafo generado.
+# 5. Función para visualizar el grafo generado con etiquetas A, B, C...
 #    Args:
 #        G: Grafo generado
 
 def visualizar_grafo(G):
     import matplotlib.pyplot as plt
+    
     plt.figure(figsize=(8, 6))
     pos = nx.spring_layout(G)
-    nx.draw(G, pos, with_labels=True, node_color="lightblue", edge_color="gray", node_size=500, font_size=10)
+    
+    # Crear etiquetas personalizadas (A, B, C... AA, AB si hay más de 26 nodos)
+    labels = {n: string.ascii_uppercase[n % 26] + (string.ascii_uppercase[n // 26 - 1] if n >= 26 else "") for n in G.nodes()}
+    
+    nx.draw(G, pos, with_labels=True, labels=labels, node_color="lightblue", edge_color="gray", node_size=500, font_size=10)
     plt.title("Grafo Generado")
     plt.show()
 
@@ -90,21 +98,13 @@ def visualizar_grafo(G):
 # -----------------------------------------|
 
 if __name__ == "__main__":
-    print("Seleccione el tipo de grafo a generar:")
-    print("1. Grafo Simple")
-    print("2. Grafo Conexo")
-    print("3. Grafo Planar")
-    opcion = input("Ingrese la opción (1/2/3): ")
+    # Generación completamente aleatoria
+    num_vertices = random.randint(20, 50)  # Se elige un número aleatorio de vértices entre 20 y 50
+    opcion = random.choice(["1", "2", "3"])  # Se elige un tipo de grafo aleatoriamente
     
-    while True:
-        try:
-            num_vertices = int(input("Ingrese el número de vértices (mínimo 20): "))
-            if num_vertices >= 20:
-                break
-            else:
-                print("Debe ingresar un número mayor o igual a 20.")
-        except ValueError:
-            print("Entrada inválida. Ingrese un número entero.")
+    tipo_grafo = "Simple" if opcion == "1" else "Conexo" if opcion == "2" else "Planar"
+    print(f"Generando un grafo aleatorio del tipo: {tipo_grafo}")
+    print(f"Número de vértices: {num_vertices}")
     
     if opcion == "1":
         G = generar_grafo_simple(num_vertices)
@@ -115,14 +115,9 @@ if __name__ == "__main__":
     elif opcion == "3":
         G = generar_grafo_planar(num_vertices)
         filename = "grafo_planar.graphml"
-    else:
-        print("Opción inválida. Saliendo del programa.")
-        exit()
     
-    print(f"Grafo generado con {num_vertices} vértices.")
-    file_path = exportar_grafo_graphml(G, filename)
-    print(f"Grafo exportado en: {file_path}")
+    num_aristas = G.number_of_edges()
+    print(f"Número de ejes: {num_aristas}")
+    
+    exportar_grafo_graphml(G, filename)
     visualizar_grafo(G)
-
-
-
