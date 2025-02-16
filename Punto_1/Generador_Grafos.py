@@ -73,7 +73,7 @@ def exportar_grafo_graphml(G, filename):
     local_dir = os.getcwd()
     file_path = os.path.join(local_dir, filename)
     nx.write_graphml(G, file_path)
-    print(f"Archivo guardado exitosamente en: {file_path}. Puede abrirlo en Cytoscape para visualizar la estructura del grafo.")
+    print(f"Archivo .GRAPHML guardado en: {file_path}.")
     return file_path
 
 # 5. Función para visualizar el grafo generado con etiquetas A, B, C...
