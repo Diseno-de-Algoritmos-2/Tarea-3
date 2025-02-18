@@ -28,7 +28,7 @@ def main():
     # -------------------------------------------------------|
     # Simulación de Monte Carlo.
 
-    n = 1000                                                                    # Numero de simulaciones para calcular la probabilidad.
+    n = 10000                                                                    # Numero de simulaciones para calcular la probabilidad.
     max_arcos = (N_VERTICES * (N_VERTICES - 1)) // 2                            # Numero máximo de aristas a las que se va a llegar (grafo completo).
     
     probabilidades = []                                                         # Lista para guardar las probabilidades de que el grafo sea planar.                            
