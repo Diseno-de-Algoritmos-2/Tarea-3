@@ -1,6 +1,6 @@
 """
 Generación de grafos 
-
+"""
 
 # -----------------------------------------|
 # Daniel Vargas
@@ -10,17 +10,14 @@ Generación de grafos
 
 # Importa las librerías necesarias:
 # networkx: Para la creación y manipulación de grafos.
-# random: Para generar valores aleatorios.
 # os: Para gestionar archivos.
 
 import networkx as nx
-import random
 import os
 import string
+import matplotlib.pyplot as plt
 
-
-
-def generar_grafo_planar_conexo_simple(num_vertices, max_intentos=1000):
+def generar_grafo_planar_conexo_simple(num_vertices, max_intentos=5000):
     p = 0.2
     for _ in range(max_intentos):
         G = nx.gnp_random_graph(num_vertices, p)
